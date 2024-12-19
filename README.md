@@ -1,3 +1,3 @@
 # secretsanta
 
-Using for the company puprpose only!!
+Using for the company purpose only!!
