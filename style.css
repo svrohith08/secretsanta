@@ -1,0 +1,183 @@
+body {
+    font-family: 'Mokoto', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(to bottom, #ff00b3, #ff6600);
+    animation: backgroundMove 30s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 100% 100%; }
+}
+
+#game-container {
+    width: 80%;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s;
+}
+
+#game-container:hover {
+    transform: scale(1.05);
+}
+
+#registration-form input, #login-form input {
+    margin: 5px;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    transform: perspective(400px) rotateX(5deg);
+}
+
+button:hover {
+    background-color: #e64a19;
+    transform: perspective(400px) rotateX(0deg);
+}
+
+.cartoon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cartoon, .tree {
+    font-size: 100px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.chit-box {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.chit {
+    width: 150px;
+    height: 200px;
+    background: url('https://via.placeholder.com/150x200.png?text=Chit') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    transform: rotateY(0deg);
+}
+
+.chit:hover {
+    transform: scale(1.1) rotateY(10deg);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.chit.picked {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: rotateY(90deg);
+}
+
+#chit-result {
+    font-size: 20px;
+    color: #4CAF50;
+    margin-top: 20px;
+}
+
+#go-back {
+    margin-top: 20px;
+    background-color: #2196F3;
+}
+
+/* Styling for the Game Rules */
+#game-rules {
+    text-align: left;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#game-rules h3 {
+    font-size: 20px;
+    color: #d32f2f;
+}
+
+#game-rules ul {
+    font-size: 16px;
+    list-style-type: none;
+    padding-left: 20px;
+    text-align: left;
+}
+
+#game-rules ul li {
+    margin-bottom: 10px;
+}
+
+#developer-note {
+    font-size: 18px;
+    color: black;
+    font-family: 'Mokoto', Helvetica, sans-serif;
+    margin-top: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    width: 0;
+    animation: typing 10s steps(100) 1s forwards;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+
+#developer-note strong {
+    color: #ff5722;
+}
+
+.result-message {
+    font-size: 18px; /* Reduced font size by 2 */
+    color: #4CAF50;
+    font-weight: normal; /* Normal font weight for general text */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    margin-top: 20px;
+    text-align: justify; /* Justify text */
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Times New Roman', Times, serif; /* Set font to Times New Roman */
+}
+
+/* Bold only specific details */
+.result-message strong {
+    font-weight: bold;
+}
