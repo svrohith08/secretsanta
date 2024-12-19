@@ -1,17 +1,29 @@
 let participants = [
-    { name: 'Rohith', phone: '123-456-7890', address: '123 Main St, City, Country', pickedBy: null },
-    { name: 'Reethushree', phone: '987-654-3210', address: '456 Elm St, City, Country', pickedBy: null },
-    { name: 'Sara', phone: '555-123-4567', address: '789 Oak St, City, Country', pickedBy: null },
-    // Add more participants here...
+{name: 'Rohith' , phone: '9353890879' , address: '28/2,21st Cross Vinayaka Nagar, Behind Usha Parlour, K R Puram,Bengaluru-560036'},
+{name: 'Priya Hiremath' , phone: '9535038416' , address: 'Manyata'},
+{name: 'Anjali Kumari' , phone:'8084257276' , address: 'Manyata'},
 ];
 let currentPlayer = null;
 
 // Registration
 const addParticipant = () => {
-    alert('Participants are hardcoded, no need for registration.');
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+
+    if (!name || !phone || !address) {
+        alert('Please fill out all fields!');
+        return;
+    }
+
+    participants.push({ name, phone, address, pickedBy: null });
+    document.getElementById('participants-list').innerHTML += `<p>${name} - ${phone} - ${address}</p>`;
+
+    document.getElementById('name').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('address').value = '';
 };
 
-// Skip participant registration since data is hardcoded
 document.getElementById('add-participant').addEventListener('click', addParticipant);
 
 document.getElementById('go-to-login').addEventListener('click', () => {
@@ -160,3 +172,4 @@ document.getElementById('go-back').addEventListener('click', () => {
         window.history.back();  // For navigating back if needed in a multi-page app
     }
 });
+
