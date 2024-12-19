@@ -1,11 +1,17 @@
+// All registered participants (for login)
 let participants = [
-{name: 'Rohith' , phone: '9353890879' , address: '28/2,21st Cross Vinayaka Nagar, Behind Usha Parlour, K R Puram,Bengaluru-560036'},
-{name: 'Priya Hiremath' , phone: '9535038416' , address: 'Manyata'},
-{name: 'Anjali Kumari' , phone:'8084257276' , address: 'Manyata'}
+    { name: 'Rohith', phone: '1234567890', address: '123 Street, City', pickedBy: null },
+    { name: 'John', phone: '0987654321', address: '456 Avenue, City', pickedBy: null },
+    { name: 'Alice', phone: '1122334455', address: '789 Boulevard, City', pickedBy: null },
+    // Add other participants
 ];
+
+// Chits for the game (dynamic list that will change)
+let remainingChits = [...participants];  // Initialize remaining chits with all participants
+
 let currentPlayer = null;
 
-// Registration
+// Registration Logic
 const addParticipant = () => {
     const name = document.getElementById('name').value;
     const phone = document.getElementById('phone').value;
@@ -17,59 +23,49 @@ const addParticipant = () => {
     }
 
     participants.push({ name, phone, address, pickedBy: null });
-    document.getElementById('participants-list').innerHTML += `<p>${name} - ${phone} - ${address}</p>`;
+    remainingChits.push({ name, phone, address, pickedBy: null });
 
     document.getElementById('name').value = '';
     document.getElementById('phone').value = '';
     document.getElementById('address').value = '';
 };
 
-document.getElementById('add-participant').addEventListener('click', addParticipant);
-
-document.getElementById('go-to-login').addEventListener('click', () => {
-    document.getElementById('registration-form').style.display = 'none';
-    document.getElementById('login-form').style.display = 'block';
-});
-
-document.getElementById('go-back').addEventListener('click', () => {
-    location.reload();
-});
-
-// Login
+// Login Logic
 const login = () => {
-    const name = document.getElementById('login-name').value;
-    const phone = document.getElementById('login-phone').value;
+    const name = document.getElementById('login-name').value.trim();
+    const phone = document.getElementById('login-phone').value.trim();
 
-    const user = participants.find(p => p.name === name && p.phone === phone);
+    const user = participants.find(p => p.name.toLowerCase() === name.toLowerCase() && p.phone === phone);
     if (!user) {
         alert('Invalid login details!');
         return;
     }
 
     currentPlayer = name;
-    document.getElementById('current-user-info').textContent = `Logged in as: ${name}`;
+    document.getElementById('current-user-info').textContent = `Logged in as: ${user.name}`;
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('game-stage').style.display = 'block';
     loadChits();
 };
 
-document.getElementById('login-button').addEventListener('click', login);
-
-// Game Logic
+// Load Chits Logic (For Game Stage)
 const loadChits = () => {
     const chitBox = document.querySelector('.chit-box');
     chitBox.innerHTML = '';
-    participants
-        .filter(p => p.name !== currentPlayer && !p.pickedBy)
-        .forEach((participant, index) => {
-            const chit = document.createElement('div');
-            chit.classList.add('chit');
-            chit.setAttribute('data-index', index);
-            chit.addEventListener('click', () => pickChit(index));
-            chitBox.appendChild(chit);
-        });
+
+    // Filter out the current player's name from the available chits
+    const filteredChits = remainingChits.filter(participant => participant.name !== currentPlayer);
+
+    filteredChits.forEach((participant, index) => {
+        const chit = document.createElement('div');
+        chit.classList.add('chit');
+        chit.setAttribute('data-index', index);
+        chit.addEventListener('click', () => pickChit(index));
+        chitBox.appendChild(chit);
+    });
 };
 
+// Picking a Chit
 const pickChit = (index) => {
     const chitBox = document.querySelector('.chit-box');
     const chit = chitBox.children[index];
@@ -79,56 +75,60 @@ const pickChit = (index) => {
         return;
     }
 
-    // Get the participant information
-    const availableParticipants = participants.filter(p => p.name !== currentPlayer && !p.pickedBy);
+    const picked = remainingChits[index];
 
-    if (availableParticipants.length === 0) {
-        alert('No more participants to pick!');
-        return;
-    }
-
-    const picked = availableParticipants[index % availableParticipants.length];
+    // Set the pickedBy value for the participant
     picked.pickedBy = currentPlayer;
 
     chit.classList.add('picked'); // Flip the chit to show the backside
 
-    // Create a div for the backside of the chit
+    // Create a div for the backside of the chit with a delete button
     const backSide = document.createElement('div');
     backSide.classList.add('back');
     backSide.style.display = 'flex'; // Make the backside visible
     backSide.innerHTML = `
         <div class="result-message">
-            <p>Ho ho ho! 🎅 Thanks for picking your chit! Here’s your festive mission: You should surprise <strong>${picked.name}</strong> with a wonderful gift! 🎁<br>
-            They’ve been extra nice this year, and here’s the info to help you make their holiday season merry and bright:<br>
-            <strong>Phone</strong>: <strong>${picked.phone}</strong><br>
-            <strong>Address</strong>: <strong>${picked.address}</strong><br><br>
-            Use this information to spread some holiday cheer — maybe even a little New Year’s sparkle! ✨🎄 Enjoy gift-giving and make sure it’s wrapped with joy, love, and a dash of holiday magic! 🌟<br>
-            Wishing you a Merry Christmas and a Happy New Year! 🎉🎁
-            Remember to give your stand-up updates in the channel okay!! ✨✨</p>
+            <p>Ho ho ho! 🎅 Thanks for picking your chit! Here’s your festive mission: You should surprise <strong>${picked.name}</strong> with a wonderful gift! 🎁
+            <br>Phone: <strong>${picked.phone}</strong><br>Address: <strong>${picked.address}</strong>
+            <br>Wishing you a Merry Christmas and a Happy New Year! 🎉🎁
+            <button class="delete-chit" onclick="deleteChit(${index})">Delete</button></p>
         </div>
     `;
-    chit.appendChild(backSide); // Append the backside to the chit
+    chit.appendChild(backSide);
 
     // Display the result message in a separate div on the page
     const chitResultContainer = document.getElementById('chit-result');
     chitResultContainer.innerHTML = `
         <div class="result-message">
-            <p>Ho ho ho! 🎅 Thanks for picking your chit! Here’s your festive mission: You should surprise <strong>${picked.name}</strong> with a wonderful gift! 🎁<br>
-            They’ve been extra nice this year, and here’s the info to help you make their holiday season merry and bright:<br>
-            <strong>Phone</strong>: <strong>${picked.phone}</strong><br>
-            <strong>Address</strong>: <strong>${picked.address}</strong><br><br>
-            Use this information to spread some holiday cheer — maybe even a little New Year’s sparkle! ✨🎄 Enjoy gift-giving and make sure it’s wrapped with joy, love, and a dash of holiday magic! 🌟<br>
-            Wishing you a Merry Christmas and a Happy New Year! 🎉🎁
-            Remember to give your stand-up updates in the channel okay!! ✨✨</p>
+            <p>Ho ho ho! 🎅 Thanks for picking your chit! Here’s your festive mission: You should surprise <strong>${picked.name}</strong> with a wonderful gift! 🎁
+            <br>Phone: <strong>${picked.phone}</strong><br>Address: <strong>${picked.address}</strong>
+            <br>Wishing you a Merry Christmas and a Happy New Year! 🎉🎁
+            <button class="delete-chit" onclick="deleteChit(${index})">Delete</button></p>
         </div>
     `;
 
-    chitResultContainer.style.display = 'block'; // Make sure the result is visible
+    chitResultContainer.style.display = 'block';
+};
 
-    // Reload the chits after a small delay (optional)
-    setTimeout(() => {
-        loadChits(); // Reload to update available chits
-    }, 3000); // After the message has been displayed for a while
+// Deleting the Chit
+const deleteChit = (index) => {
+    const chitBox = document.querySelector('.chit-box');
+    const chit = chitBox.children[index];
+    const picked = remainingChits[index];
+
+    // Remove the chit from remainingChits (but keep the participant in the original list)
+    remainingChits = remainingChits.filter((_, i) => i !== index);
+
+    // Remove chit from the display
+    chit.remove();
+
+    // Update the remaining chits for the game
+    loadChits();
+
+    // Optionally, update the UI to show that the participant's chit was deleted
+    const chitResultContainer = document.getElementById('chit-result');
+    chitResultContainer.innerHTML = `<p>The chit for <strong>${picked.name}</strong> has been deleted! 🎅</p>`;
+    chitResultContainer.style.display = 'block';
 };
 
 // Go Back Button Logic
@@ -139,37 +139,3 @@ goBackButton.addEventListener('click', () => {
     chitResultContainer.style.display = 'none'; // Hide result
     loadChits(); // Reload the chits and reset the state if needed
 });
-
-document.addEventListener('DOMContentLoaded', () => {
-    const developerNote = document.getElementById('developer-note');
-    //const message = 'This is a fun game developed by Rohith S V. Treat him with a coffee if you like this innovative idea.';
-
-    let wordIndex = 0;
-
-    function addWord() {
-        const words = message.split(' ');
-
-        // Stop the typing effect after the word "idea"
-        if (wordIndex < words.length) {
-            developerNote.innerHTML += words[wordIndex] + ' ';
-            wordIndex++;
-            setTimeout(addWord, 300); // Adjust speed as desired
-        }
-    }
-
-    addWord(); // Start typing the message
-});
-
-// Go back to previous page/view
-document.getElementById('go-back').addEventListener('click', () => {
-    if (document.getElementById('login-form').style.display === 'block') {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('registration-form').style.display = 'block';  // Show Registration Form
-    } else if (document.getElementById('game-stage').style.display === 'block') {
-        document.getElementById('game-stage').style.display = 'none';
-        document.getElementById('login-form').style.display = 'block';  // Show Login Form
-    } else {
-        window.history.back();  // For navigating back if needed in a multi-page app
-    }
-});
-
