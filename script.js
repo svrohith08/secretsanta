@@ -1,8 +1,7 @@
 let participants = [
     { name: 'Rohith', phone: '123-456-7890', address: '123 Main St, City, Country', pickedBy: null },
     { name: 'Reethushree', phone: '987-654-3210', address: '456 Elm St, City, Country', pickedBy: null },
-    { name: 'Sara', phone: '555-123-4567', address: '789 Oak St, City, Country', pickedBy: null },
-    // Add more participants here...
+    { name: 'Sara', phone: '555-123-4567', address: '789 Oak St, City, Country', pickedBy: null }
 ];
 let currentPlayer = null;
 
