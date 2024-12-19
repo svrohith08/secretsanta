@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chit Picker Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="game-container">
+    <div id="registration-form">
+        <h1>Welcome to the Chit Picker Game</h1>
+        <p>This festive game lets you register, log in, and pick chits to reveal random details! Each chit is a surprise, and the game is themed with Christmas and New Year cheer!</p>
+
+        <!-- Game Rules Section -->
+        <div id="game-rules">
+            <h3>Game Rules to Play:</h3>
+            <ul>
+                <li>1. Give Name, PHNo, Full Address while entering the details. Please give appropriate details [CaseSensitive 🔠].</li>
+                <li>2. Login Using Name, PHNo [CaseSensitive 🔠].</li>
+                <li>3. Only one person should play at once. Please check your Slack messages. You will receive a message with the text "Start Game" — only then should you play.</li>
+                <li>4. You can only choose one chit, and then you should close the window [No Cheating 🙅‍♂️🙅‍♂️].</li>
+                <li>5. Details should not be revealed to anyone [No Cheating 🙅‍♂️🙅‍♂️].</li>
+                <li>6. Team Payments ➡️➡️➡️ GET,SET,GO 🔥🔥🔥 </li>
+            </ul>
+        </div>
+
+
+        <!-- Register Form Fields -->
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <input type="text" id="address" placeholder="Address" required>
+        <button id="add-participant">Add Participant</button>
+        <button id="go-to-login">Login</button>
+        <div id="participants-list"></div>
+
+        <!-- Developer Note with Typing Animation -->
+        <div id="developer-note">
+            This is a fun game developed by <strong>Rohith S V</strong>. Treat him with a coffee if you like this innovative idea.
+        </div>
+    </div>
+
+    <div id="login-form" style="display:none;">
+        <h1>Login</h1>
+        <input type="text" id="login-name" placeholder="Name" required>
+        <input type="text" id="login-phone" placeholder="Phone Number" required>
+        <button id="login-button">Login</button>
+        <button id="go-back">Go Back</button>
+    </div>
+
+    <div id="game-stage" style="display:none;">
+        <div id="current-user-info"></div>
+        <div class="cartoon-container">
+            <div class="cartoon">🎅</div>
+            <div class="tree">🎄</div>
+            <div class="chit-box">
+                <!-- Chits will be dynamically added here -->
+            </div>
+        </div>
+        <div id="chit-result"></div>
+        <button id="go-back">Go Back</button>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
