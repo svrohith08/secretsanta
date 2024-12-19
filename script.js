@@ -1,7 +1,7 @@
 let participants = [
 {name: 'Rohith' , phone: '9353890879' , address: '28/2,21st Cross Vinayaka Nagar, Behind Usha Parlour, K R Puram,Bengaluru-560036'},
 {name: 'Priya Hiremath' , phone: '9535038416' , address: 'Manyata'},
-{name: 'Anjali Kumari' , phone:'8084257276' , address: 'Manyata'},
+{name: 'Anjali Kumari' , phone:'8084257276' , address: 'Manyata'}
 ];
 let currentPlayer = null;
 
