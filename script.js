@@ -1,5 +1,6 @@
+// Array holding remaining chits data
 let participants = [
-     { name: 'Rohith', phone: '1234567890', address: '123 Street, City', pickedBy: null },
+    { name: 'Rohith', phone: '1234567890', address: '123 Street, City', pickedBy: null },
     { name: 'John', phone: '0987654321', address: '456 Avenue, City', pickedBy: null },
     { name: 'Alice', phone: '1122334455', address: '789 Boulevard, City', pickedBy: null }
 ];
@@ -134,10 +135,34 @@ const pickChit = (index) => {
 
     chitResultContainer.style.display = 'block'; // Make sure the result is visible
 
+    // Remove picked chit from remainingChits
+    remainingChits = remainingChits.filter((p, i) => i !== index);
+
     // Reload the chits after a small delay (optional)
     setTimeout(() => {
         loadChits(); // Reload to update available chits
     }, 3000); // After the message has been displayed for a while
+};
+
+// Delete Chit Logic
+const deleteChit = (index) => {
+    const chitBox = document.querySelector('.chit-box');
+    const chit = chitBox.children[index];
+
+    if (!chit) {
+        alert('Chit not found!');
+        return;
+    }
+
+    // Remove the chit from the remainingChits array
+    remainingChits = remainingChits.filter((_, i) => i !== index);
+    
+    // Remove chit from display
+    chit.remove();
+
+    // Hide the result message
+    const chitResultContainer = document.getElementById('chit-result');
+    chitResultContainer.style.display = 'none';
 };
 
 // Go Back Button Logic
@@ -147,35 +172,4 @@ goBackButton.addEventListener('click', () => {
     const chitResultContainer = document.getElementById('chit-result');
     chitResultContainer.style.display = 'none'; // Hide result
     loadChits(); // Reload the chits and reset the state if needed
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const developerNote = document.getElementById('developer-note');
-    let wordIndex = 0;
-
-    function addWord() {
-        const words = message.split(' ');
-
-        // Stop the typing effect after the word "idea"
-        if (wordIndex < words.length) {
-            developerNote.innerHTML += words[wordIndex] + ' ';
-            wordIndex++;
-            setTimeout(addWord, 300); // Adjust speed as desired
-        }
-    }
-
-    addWord(); // Start typing the message
-});
-
-// Go back to previous page/view
-document.getElementById('go-back').addEventListener('click', () => {
-    if (document.getElementById('login-form').style.display === 'block') {
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('registration-form').style.display = 'block';  // Show Registration Form
-    } else if (document.getElementById('game-stage').style.display === 'block') {
-        document.getElementById('game-stage').style.display = 'none';
-        document.getElementById('login-form').style.display = 'block';  // Show Login Form
-    } else {
-        window.history.back();  // For navigating back if needed in a multi-page app
-    }
 });
