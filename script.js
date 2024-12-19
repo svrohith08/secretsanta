@@ -135,8 +135,14 @@ const pickChit = (index) => {
 
     chitResultContainer.style.display = 'block'; // Make sure the result is visible
 
-    // Remove picked chit from remainingChits
-    remainingChits = remainingChits.filter((p, i) => i !== index);
+    // Show the delete button
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete this Chit';
+    deleteButton.classList.add('delete-btn');
+    deleteButton.addEventListener('click', () => deleteChit(index));
+    chitResultContainer.appendChild(deleteButton);
+
+    currentPickedChitIndex = index; // Store the index of the picked chit
 
     // Reload the chits after a small delay (optional)
     setTimeout(() => {
@@ -146,23 +152,22 @@ const pickChit = (index) => {
 
 // Delete Chit Logic
 const deleteChit = (index) => {
-    const chitBox = document.querySelector('.chit-box');
-    const chit = chitBox.children[index];
-
-    if (!chit) {
-        alert('Chit not found!');
-        return;
-    }
-
     // Remove the chit from the remainingChits array
     remainingChits = remainingChits.filter((_, i) => i !== index);
-    
-    // Remove chit from display
-    chit.remove();
 
-    // Hide the result message
+    // Remove chit from display
+    const chitBox = document.querySelector('.chit-box');
+    const chit = chitBox.children[index];
+    if (chit) {
+        chit.remove();
+    }
+
+    // Hide the result message and delete button
     const chitResultContainer = document.getElementById('chit-result');
     chitResultContainer.style.display = 'none';
+
+    // Refresh the available chits after deleting
+    loadChits();
 };
 
 // Go Back Button Logic
